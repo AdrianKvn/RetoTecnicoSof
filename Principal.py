@@ -1,7 +1,8 @@
 import os
 
-from NavesEspaciales import *
-#sys.path.insert(0,'./servicios/')
+from servicio.NavesRoboticas import NavesRoboticas
+from servicio.NavesTripuladas import NavesTripuladas
+from servicio.VehiculoLanzaderas import VehiculoLanzaderas
 
 naves_tripuladas=[]
 naves_roboticas=[]
