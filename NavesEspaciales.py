@@ -1,6 +1,7 @@
 class NavesEspaciales:
     
-    def __init__(self,velocidad,potencia,tEnergia,peso,altura,empuje) -> None:
+    def __init__(self,nombre,velocidad,potencia,tEnergia,peso,altura,empuje) -> None:
+        self._nombre =nombre
         self._velocidad = velocidad
         self._potencia = potencia
         self._tEnergia = tEnergia
@@ -9,7 +10,10 @@ class NavesEspaciales:
         self._empuje = empuje
     
     
-    #METODOS GET's        
+    #METODOS GET's  
+    @property
+    def nombre(self):
+        return self._nombre
     @property
     def velocidad (self):
         return self._velocidad
@@ -30,6 +34,9 @@ class NavesEspaciales:
         return self._empuje
     
     #METODO SET's
+    @nombre.setter
+    def nombre(self,nombre):
+        self._nombre = nombre
     @velocidad.setter
     def velocidad(self,velocidad):
         self._velocidad= velocidad
@@ -52,6 +59,7 @@ class NavesEspaciales:
     
     def __str__(self) -> str:
         return f'''
+            Nombre de la nave: {(self._nombre).upper()}
             Altura : {self._altura:,} m
             Peso : {self._peso:,} kg
             Velocidad {self._velocidad:,} km/h
@@ -60,13 +68,34 @@ class NavesEspaciales:
             Potencia {self._potencia:,} Hp
             '''
             
-            
-class VehiculoLanzaderas(NavesEspaciales):
+class NavesRoboticas(NavesEspaciales):
     
-    def __init__(self, velocidad, potencia, tEnergia, peso, altura, empuje,capacidadT) -> None:
-        super().__init__(velocidad, potencia, tEnergia, peso, altura, empuje)
+    def __init__(self, nombre, velocidad, potencia, tEnergia, peso, altura, empuje) -> None:
+        super().__init__(nombre, velocidad, potencia, tEnergia, peso, altura, empuje)
+    
+
+    def crear_nave_robotica(self):
+        self._nombre = input('* Ingresa el nombre de la nave : ')
+        self._velocidad = int(input('* Ingresa la velocidad : '))
+        self._potencia = int(input('* Ingresa la potencia de la nave : '))
+        self._tEnergia = input('* Tipo de energia : ')
+        self._peso = int(input('* Ingresa peso de la nave : '))
+        self._altura = int(input('* Ingresa la altura : '))
+        self._empuje = int(input('* Ingresa el empuje : '))
+        
+        print('Nave creada con exito')
+        return
+    
+class VehiculoLanzaderas(NavesEspaciales):
+    contadorVehLan = 0
+    
+    def __init__(self,nombre, velocidad, potencia, tEnergia, peso, altura, empuje,capacidadT) -> None:
+        super().__init__(nombre, velocidad, potencia, tEnergia, peso, altura, empuje)
         self._capacidadT = capacidadT
         self._tipo = 'Vehiculo Lanzaderas'
+        VehiculoLanzaderas.contadorVehLan+=1
+        self._id = VehiculoLanzaderas.contadorVehLan
+
         
     @property
     def capacidadT(self):
@@ -78,24 +107,38 @@ class VehiculoLanzaderas(NavesEspaciales):
 
     def __str__(self) -> str:
         return f'''
-            Tipo de nave: {self._tipo}
-            
-            Capacidad de transporte: {self._capacidadT}{super().__str__()}'''
+            ID : VL{self._id}
+            Tipo de nave: Vehiculo Lanzadera
+            {super().__str__()}
+            Capacidad de transporte: {self._capacidadT}'''
             
     def mostrarDetalleLan(self):
         print(f'''
             Tipo de nave: {self._tipo}     
             Capacidad de tripulantes:{self._capacidadT}{super().__str__()}''')
     
+    def crear_vehiculo_lanzadera(self):
+        
+        self._nombre = input('* Ingresa el nombre de la nave : ')
+        self._velocidad = int(input('* Ingresa la velocidad : '))
+        self._potencia = int(input('* Ingresa la potencia de la nave : '))
+        self._tEnergia = input('* Tipo de energia : ')
+        self._peso = int(input('* Ingresa peso de la nave : '))
+        self._altura = int(input('* Ingresa la altura : '))
+        self._empuje = int(input('* Ingresa el empuje : '))
+        
+        
+        print(f'Nave Creada con Exito')
+        return            
 
-    
 class NavesTripuladas(NavesEspaciales):
-    
-    
-    def __init__(self, velocidad, potencia, tEnergia, peso, altura, empuje,capacidadPer) -> None:
-        super().__init__(velocidad, potencia, tEnergia, peso, altura, empuje)
+    contadorNavTri = 0
+    def __init__(self,nombre, velocidad, potencia, tEnergia, peso, altura, empuje,capacidadPer) -> None:
+        super().__init__(nombre,velocidad, potencia, tEnergia, peso, altura, empuje)
         self._capacidadPer = capacidadPer
-       # self._tipo = 'Naves Tripuladas'
+        NavesTripuladas.contadorNavTri +=1
+        self._id = NavesTripuladas.contadorNavTri
+        
     
     @property
     def capacidadPer(self):
@@ -108,18 +151,11 @@ class NavesTripuladas(NavesEspaciales):
         
     def __str__(self) -> str:
         return f'''
+            ID : NT{self._id}
             Tipo de nave: Nave Tripulada
-            
-            Capacidad de tripulantes:{self._capacidadPer}{super().__str__()}'''
-            
-    def mostrarDetalleTri2(self):
-        self.mostrarDetalleTri2()
-        print(f'''
-            
-            Capacidad de tripulantes:{self._capacidadPer}{super().__str__()}''')
-            
-            
-
+            {super().__str__()}     
+            Capacidad de tripulantes:{self._capacidadPer}'''
+                        
     def mostrarDetalleTri(self):
         
         print(f''''
@@ -131,68 +167,73 @@ class NavesTripuladas(NavesEspaciales):
             Tipo de Energia : {self._tEnergia}
             Potencia : {self._potencia:,} Hp
             Capacidad de Tripulates : {self._capacidadPer}
+            
             ''')
             
     
     def crearNaveTri(self):            
-        listaNtK=['velocidad', 'potencia', 'tEnergia', 'peso', 'altura', 'empuje', 'capacidadPer']
-        listaNtV=[]
-        i=1
-        while i <= 5:
-            i+1
-            nt='nt'
-            conC=f'{nt}{i}'
+
+        self._nombre = input('* Ingresa el nombre de la nave : ')
+        self._velocidad = int(input('* Ingresa la velocidad : '))
+        self._potencia = int(input('* Ingresa la potencia de la nave : '))
+        self._tEnergia = input('* Tipo de energia : ')
+        self._peso = int(input('* Ingresa peso de la nave : '))
+        self._altura = int(input('* Ingresa la altura : '))
+        self._empuje = int(input('* Ingresa el empuje : '))
+        self._capacidadPer = int(input('* Capacidad de tripulante : '))
         
-            conC= NavesTripuladas
-            conC._velocidad = int(input('* Ingresa la velocidad '))
-            listaNtV.append(self._velocidad)
-            conC._potencia = int(input('* Ingresa la potencia de la nave '))
-            listaNtV.append(self._potencia)
-            conC._tEnergia = input('* Tipo de energia ')
-            listaNtV.append(self._tEnergia)
-            conC._peso = int(input('* Ingresa peso de la nave '))
-            listaNtV.append(self._peso)
-            conC._altura = int(input('* Ingresa la altura '))
-            listaNtV.append(self._altura)
-            conC._empuje = int(input('* Ingresa el empuje '))
-            listaNtV.append(self._empuje)
-            conC._capacidadPer = int(input('* Capacidad de tripulante '))
-            listaNtV.append(self._capacidadPer)
-            dicNT=dict(zip(listaNtK,listaNtV))
-            
         
-            print(f'Nave Creada con Exito')
-            return dicNT
-        # print(dnt)
+        print(f'Nave Creada con Exito')
+        return 
+    
+    def buscarNave(id):
+        for i in range (0,len(NavesTripuladas.navelt)):
+            if i == id:
+                # print(NavesTripuladas.navelt[i])
+                return i
+            return -1
+        
         
 
 
 
-def load():
-    from tqdm import tqdm
-    from time import sleep
-    a = 10
-    for i in tqdm(range(a),desc='Cerrando'):
-        sleep(0.1)
 
     
     
     ##TEST
 if __name__ == "__main__":
-    n = NavesEspaciales(12,166,'Combistible',276,2763,2662)
-    print(n)
+    n = NavesEspaciales('a',12,166,'Combistible',276,2763,2662)
+    # print(n)
+    # navest=[]
+    encaDic=['nombre', 'velocidad', 'potencia', 'tEnergia', 'peso', 'altura', 'empuje','capacidadT']
+    dataDics=[]
     
-    # vl= VehiculoLanzaderas(525,7662,'Panel',636,2388,777)
-    # print(vl)
+    vl =VehiculoLanzaderas('NAVE NOMBRE',22,11,'r',333,111,444,555)
+    dataDics.append(vl)
+    #dicNav=dict(zip(encaDic,dataDics))
+    print(vl)
     
-    vl =VehiculoLanzaderas(22,11,'r',333,111,444,555)
-    vl.mostrarDetalleLan()
-    vl2 =VehiculoLanzaderas(333,3,'rrr',333,3,34,55335)
-    vl2.mostrarDetalleLan()
+    vl2 =VehiculoLanzaderas('c',444,444,'qqq',99,99,99,59955)
     
-    # nt =NavesTripuladas
-    # nt.crearNaveTri(nt)
+ 
+    #for k,ll in dicNav.items():
+    #    print (k,ll)
+    # navest.append(vl2)
+    # buscar = 12
+    # n=len(navest)
     
-    # nt.mostrarDetalleTri(nt)
+#     def search_element(navest, n, buscar):
+#         for i in range(n):
+#             if navest[i] == buscar:
+#                 return True
+#         return False 
     
+# if search_element(navest, n, buscar):
+#     print(buscar, "is found")
+# else:
+#     print(buscar, "is not found")
+    
+    
+        
+
 
